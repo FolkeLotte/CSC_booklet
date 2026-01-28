@@ -10,6 +10,7 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{colortbl} % enables \rowcolor
+\usepackage{grffile}
 
 % ---------- "Function" definition ----------
 % \MyTable[<optional title>]{<Name>}{<Date>}{<Value>}{<Comment>}
@@ -30,7 +31,7 @@
     \rowcolor{darkgray}
     \multicolumn{4}{|l|}{\color{white}\textbf{\dogname}}\\ \hline
     % Row 2: header row (Handler / Reg. Nr / Sire), first column = multirow for picture
-    \multirow{4}{*}{\includegraphics[width=2.8cm]{ \photopath }} & \bf{Handler} & \bf{Reg. Nr} & \bf{Sire} \\ \cline{2-4}
+    \multirow{4}{*}{\includegraphics[width=2.8cm]{\photopath}} & \bf{Handler} & \bf{Reg. Nr} & \bf{Sire} \\ \cline{2-4}
     % Row 3: handler, reg nr, sire
                       & \handler      & \regnr      & \sire   \\ \cline{2-4}
     % Row 4: header row (Breeder / DOB / Dam)
@@ -91,27 +92,6 @@ We invite you to meet the dogs, appreciate their individuality, and celebrate th
 
 Hier ein Beispielaufruf von \verb|\MyTable|:
 
-\MyTable
-  {Arlo}
-  {Folke N\"ortemann}
-  {ISDS 123456}
-  {Noi}
-  {Jean-Luc Censier}
-  {01.01.2020}
-  {Penny}
-  {pictures_orig/FolkeNoertemann_Arlo.jpg}
-
-
-
-\MyTable
- {Moss}
- {Annie Vanderlinck}
- {00 / 300919 }
- { Mirk}
-  { D. T. Edwards}
- { 17.2.2009}
- { LLangwm Lass} 
- {pictures_orig/AnnieVanderlinck_Moss.jpg}
 
 
 
