@@ -1,0 +1,133 @@
+\documentclass[11pt,a4paper]{book}
+
+% ---------- Packages ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc} % omit if you use lualatex/xelatex
+\usepackage[ngerman,english]{babel} % pick languages as needed
+\usepackage{xparse}
+\usepackage{booktabs} % nicer tables (optional)
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{colortbl} % enables \rowcolor
+
+% ---------- "Function" definition ----------
+% \MyTable[<optional title>]{<Name>}{<Date>}{<Value>}{<Comment>}
+% ---------- \MyTable definition ----------
+% \MyTable{Name}{Handler}{RegNr}{Sire}{Breeder}{DOB}{Dam}
+\NewDocumentCommand{\MyTable}{ m m m m m m m m }{%
+  \def\dogname{#1}%
+  \def\handler{#2}%
+  \def\regnr{#5}%
+  \def\sire{#6}%
+  \def\breeder{#3}%
+  \def\dob{#4}%
+  \def\dam{#7}%
+  \def\photopath{#8}%
+  \begin{tabular}{|c|l|l|l|}
+    \hline
+    % Row 1: name over all 4 columns
+    \rowcolor{darkgray}
+    \multicolumn{4}{|l|}{\color{white}\textbf{\dogname}}\\ \hline
+    % Row 2: header row (Handler / Reg. Nr / Sire), first column = multirow for picture
+    \multirow{4}{*}{\includegraphics[width=2.8cm]{ \photopath }} & \bf{Handler} & \bf{Reg. Nr} & \bf{Sire} \\ \cline{2-4}
+    % Row 3: handler, reg nr, sire
+                      & \handler      & \regnr      & \sire   \\ \cline{2-4}
+    % Row 4: header row (Breeder / DOB / Dam)
+                      & \bf{Breeder} & \bf{DOB}     & \bf{Dam}  \\ \cline{2-4}
+    % Row 5: breeder, dob, dam
+                      & \breeder      & \dob      & \dam   \\ \hline
+  \end{tabular}%
+}
+
+
+\NewDocumentCommand{\MyTableOld}{ O{} m m m m }{%
+  \begin{table}[h]
+    \centering
+    % Optional title above the table:
+    \if\relax\detokenize{#1}\relax
+      % no title given → do nothing
+    \else
+      \textbf{#1}\\[0.5em]
+    \fi
+    \begin{tabular}{@{}ll@{}}
+      \toprule
+      Name    & #2 \\
+      Datum   & #3 \\
+      Wert    & #4 \\
+      Kommentar & #5 \\
+      \bottomrule
+    \end{tabular}
+  \end{table}%
+}
+
+\begin{document}
+
+\frontmatter
+\title{Beispielbuch mit \texttt{\textbackslash MyTable}}
+\author{Ihr Name}
+\date{\today}
+\maketitle
+
+\mainmatter
+\chapter{ Welcome}
+Across Europe’s hills, plains, and high pastures, the partnership between shepherd and dog has shaped landscapes, livelihoods, and traditions for centuries. Long before trials and championships existed, sheepdogs were quietly perfecting their craft: gathering scattered flocks in wind and rain, responding to subtle signals, and working with an intelligence and purpose that remains unequalled in the animal world. This championship stands in that long continuum — a modern expression of an ancient skill.
+
+A sheepdog trial is more than a competition. It is a conversation between human and dog, conducted at distance and under pressure, where trust matters more than force and precision is born of countless hours of shared work. Every outrun, every lift, every calm hold at the pen reflects years of training, instinct refined by experience, and a deep mutual understanding. What unfolds on the field is not improvised performance, but the visible result of patience, respect, and partnership.
+
+The dogs presented in this booklet represent the very highest level of European sheepdog work. They come from different countries, terrains, and bloodlines, each shaped by distinct working conditions and training philosophies. Yet they share common qualities: keen intelligence, balance, courage, and the ability to think independently while remaining closely connected to their handler. These dogs are not merely fast or obedient — they are thoughtful workers, capable of adapting instantly to sheep, field, and situation.
+
+For handlers, reaching this championship is itself an achievement. It reflects years of commitment, early mornings, long journeys, and countless small refinements that rarely attract attention but ultimately define excellence. For the dogs, it is an opportunity to demonstrate what careful breeding and responsible training can produce when talent is nurtured rather than rushed.
+
+As spectators and readers, we are invited to look beyond scores and rankings. Each run tells a story: of training choices, of momentary challenges overcome, of harmony achieved — or briefly lost and regained. Whether you are deeply familiar with sheepdog work or discovering it for the first time, this championship offers a rare chance to witness one of Europe’s most authentic working traditions performed at its very best.
+
+We invite you to meet the dogs, appreciate their individuality, and celebrate the remarkable partnership they embody.
+
+\chapter{Rules for the Final}
+
+\chapter{Einführung}
+
+\input{entries.tex}
+
+Hier ein Beispielaufruf von \verb|\MyTable|:
+
+\MyTable
+  {Arlo}
+  {Folke N\"ortemann}
+  {ISDS 123456}
+  {Noi}
+  {Jean-Luc Censier}
+  {01.01.2020}
+  {Penny}
+  {pictures_orig/FolkeNoertemann_Arlo.jpg}
+
+
+
+\MyTable
+ {Moss}
+ {Annie Vanderlinck}
+ {00 / 300919 }
+ { Mirk}
+  { D. T. Edwards}
+ { 17.2.2009}
+ { LLangwm Lass} 
+ {pictures_orig/AnnieVanderlinck_Moss.jpg}
+
+
+
+
+Hier ist ein Beispiel für die Verwendung von \verb|\MyTableOld| ohne Titel:
+
+\MyTableOld{Max Mustermann}{23.10.2025}{42}{Testeintrag ohne Titel}
+
+Und hier ein Beispiel mit Titel:
+
+\MyTableOld[Messdaten Teilnehmer 1]
+  {Erika Musterfrau}
+  {24.10.2025}
+  {3{,}14}
+  {Beispiel mit Überschrift}
+
+Sie können \verb|\MyTableOld| beliebig oft mit unterschiedlichen Argumenten aufrufen.
+
+\end{document}
