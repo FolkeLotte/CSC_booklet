@@ -14,7 +14,7 @@ for index, row in df.iterrows():
            "{" + str(row.iloc[4]) + "}" + \
            "{" + str(row.iloc[5]) + "}" + \
            "{" + str(row.iloc[6]) + "}" + \
-           "{" + str(row.iloc[7]) + "}"
+           "{\detokenize{" + str(row.iloc[7]) + "}}" + "\n"
     lines.append(line)
 
 # Join all lines with newline characters
