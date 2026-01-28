@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc} % omit if you use lualatex/xelatex
 \usepackage[ngerman,english]{babel} % pick languages as needed
+\usepackage[a4paper,margin=2cm]{geometry} % portrait orientation
 \usepackage{xparse}
 \usepackage{booktabs} % nicer tables (optional)
 \usepackage{multirow}
@@ -62,6 +63,63 @@
   \end{table}%
 }
 
+% ---------- \DogCaption definition ----------
+% \DogCaption{Name}{Handler}{Breeder}{DOB}{RegNr}{Sire}{Dam}{PhotoPath}
+% Displays dog photo on the left with information as a caption on the right
+\NewDocumentCommand{\DogCaption}{ m m m m m m m m }{%
+  \noindent
+  % Grey bar with dog's name and handler's name
+  \colorbox{darkgray}{\parbox{\dimexpr\textwidth-2\fboxsep}{%
+    \color{white}\textbf{#1} \hfill \textbf{Handler:} #2}}\\[0.1em]
+  % Picture and information side by side below the bar
+  \noindent\begin{minipage}[t]{0.35\textwidth}
+    \vspace{0pt}%
+    \includegraphics[width=\textwidth,height=4cm,keepaspectratio]{#8}
+  \end{minipage}\hfill\begin{minipage}[t]{0.60\textwidth}
+    \vspace{0pt}%
+    \textbf{Reg. Nr:} #5 \hfill \textbf{DOB:} #4\\
+    \textbf{Breeder:} #3\\
+    \textbf{Sire:} #6\\
+    \textbf{Dam:} #7
+  \end{minipage}
+  
+  \vspace{0.5em}
+}
+
+% ---------- \DogCaptionReverse definition ----------
+% \DogCaptionReverse{Name}{Handler}{Breeder}{DOB}{RegNr}{Sire}{Dam}{PhotoPath}
+% Displays dog photo on the RIGHT with information as a caption on the LEFT (mirrored)
+\NewDocumentCommand{\DogCaptionReverse}{ m m m m m m m m }{%
+  \noindent
+  % Grey bar with dog's name and handler's name
+  \colorbox{darkgray}{\parbox{\dimexpr\textwidth-2\fboxsep}{%
+    \color{white}\textbf{#1} \hfill \textbf{Handler:} #2}}\\[0.1em]
+  % Information on the LEFT and picture on the RIGHT (reversed)
+  \noindent\begin{minipage}[t]{0.60\textwidth}
+    \vspace{0pt}%
+    \textbf{Reg. Nr:} #5 \hfill \textbf{DOB:} #4\\
+    \textbf{Breeder:} #3\\
+    \textbf{Sire:} #6\\
+    \textbf{Dam:} #7
+  \end{minipage}\hfill\begin{minipage}[t]{0.35\textwidth}
+    \vspace{0pt}%
+    \includegraphics[width=\textwidth,height=4cm,keepaspectratio]{#8}
+  \end{minipage}
+  
+  \vspace{0.5em}
+}
+
+% ---------- \DogCaptionAuto definition ----------
+% \DogCaptionAuto{Name}{Handler}{Breeder}{DOB}{RegNr}{Sire}{Dam}{PhotoPath}
+% Automatically uses \DogCaption on even pages and \DogCaptionReverse on odd pages
+\NewDocumentCommand{\DogCaptionAuto}{ m m m m m m m m }{%
+  \ifodd\value{page}%
+    \DogCaptionReverse{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \else%
+    \DogCaption{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \fi%
+}
+
 \begin{document}
 
 \frontmatter
@@ -90,10 +148,78 @@ We invite you to meet the dogs, appreciate their individuality, and celebrate th
 
 \input{entries.tex}
 
-Hier ein Beispielaufruf von \verb|\MyTable|:
+\section{Alternative Layout with Caption}
+
+Here's an example using the \verb|\DogCaption| macro that displays the photo with information as a caption next to it:
+\newpage
+\DogCaption
+  {Arlo}
+  {Folke Noertemann}
+  {Jean-Luc Censier}
+  {2024-05-21}
+  {12345}
+  {Noi}
+  {Penny}
+  {PicturesOrig/FolkeNoertemann_Arlo.jpg}
+
+\DogCaption
+  {Moss}
+  {Annie Vanderlinck}
+  {D. T. Edwards}
+  {2009-02-17}
+  {123435}
+  {Mirk}
+  {Llangwn Lass}
+  {PicturesOrig/AnnieVanderlinck_Moss.jpg}
+
+\DogCaption
+  {Tweed}
+  {Annie Vanderlinck}
+  {S. M. Lejuez}
+  {2018-12-23}
+  {BIJL. G-2-3144869}
+  {Kemi Rhys}
+  {Eryn}
+  {PicturesOrig/AnnieVanderlinck_Tweed.jpg}
 
 
 
+
+
+
+\section{Automatic Layout Switching}
+
+Here are examples using \verb|\DogCaptionAuto| which automatically alternates between left and right layouts based on page number:
+\newpage
+\DogCaptionAuto
+  {Tweed}
+  {Annie Vanderlinck}
+  {S. M. Lejuez}
+  {2018-12-23}
+  {BIJL. G-2-3144869}
+  {Kemi Rhys}
+  {Eryn}
+  {PicturesOrig/AnnieVanderlinck_Tweed.jpg}
+
+\DogCaptionAuto
+  {Kinloch Luke}
+  {Folke Noertemann}
+  {Angie Driscoll}
+  {2016-03-21}
+  {2345676}
+  {Kinloch Levi}
+  {Aaron Jan}
+  {PicturesOrig/FolkeNoertemann_Luke.jpg}
+
+\DogCaptionAuto
+  {Kinloch Heath}
+  {Folke Noertemann}
+  {Angie Driscoll}
+  {2018-08-10}
+  {33333}
+  {no idea}
+  {Kinloch Penny}
+  {PicturesOrig/FolkeNoertemann_Heath.jpg}
 
 
 Hier ist ein Beispiel für die Verwendung von \verb|\MyTableOld| ohne Titel:
