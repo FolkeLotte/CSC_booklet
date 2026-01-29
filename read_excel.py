@@ -6,7 +6,7 @@ df = pd.read_excel('Entries.xlsx')
 # Create a LaTeX line for each row
 lines = []
 for index, row in df.iterrows():
-    line = "\\MyTable" + \
+    line = "\\DogCaptionAuto" + \
            "{" + str(row.iloc[0]) + "}" + \
            "{" + str(row.iloc[1]) + "}" + \
            "{" + str(row.iloc[2]) + "}" + \

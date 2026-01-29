@@ -14,9 +14,16 @@
 \usepackage{grffile}
 \usepackage{wrapfig} % for text wrapping around figures
 \usepackage{fancyhdr} % for headers and footers
+\usepackage{ifoddpage} % for checking odd/even pages correctly
 
 % ---------- Macro definitions ----------
 \input{old_macros.tex}
+
+% ---------- Counter for dog entries per page ----------
+\newcounter{dogcount}
+\setcounter{dogcount}{0}
+\newif\iffirstdogpage  % Boolean flag for first page of dog entries
+\firstdogpagetrue      % Set to true initially
 
 % ---------- \DogDataMinipage helper macro ----------
 % \DogDataMinipage{Breeder}{DOB}{RegNr}{Sire}{Dam}
@@ -89,8 +96,28 @@
 % ---------- \DogCaptionAuto definition ----------
 % \DogCaptionAuto{Name}{Handler}{Breeder}{DOB}{RegNr}{Sire}{Dam}{PhotoPath}
 % Automatically uses \DogCaption on even pages and \DogCaptionReverse on odd pages
+% Limits to 3 entries on first page (chapter title takes space), 4 on subsequent pages
 \NewDocumentCommand{\DogCaptionAuto}{ m m m m m m m m }{%
-  \ifodd\value{page}%
+  % Check if we've reached the limit for this page
+  \iffirstdogpage%
+    % First page: limit is 3 entries
+    \ifnum\value{dogcount}=3
+      \newpage%
+      \setcounter{dogcount}{0}%
+      \firstdogpagefalse% % After first page break, set flag to false
+    \fi%
+  \else%
+    % Subsequent pages: limit is 4 entries
+    \ifnum\value{dogcount}=4
+      \newpage%
+      \setcounter{dogcount}{0}%
+    \fi%
+  \fi%
+  % Increment counter
+  \stepcounter{dogcount}%
+  % Display the dog caption
+  \checkoddpage%
+  \ifoddpage%
     \DogCaptionReverse{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
   \else%
     \DogCaption{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
@@ -129,43 +156,44 @@
 
 \chapter{Rules for the Final}
 
-\chapter{Einführung}
+\chapter{}
+\markboth{Dogs and their Handlers}{Dogs and their Handlers}
 
 \input{entries.tex}
 
-\section{Alternative Layout with Caption}
-
-Here's an example using the \verb|\DogCaption| macro that displays the photo with information as a caption next to it:
-\newpage
-\DogCaption
-  {Arlo}
-  {Folke Noertemann}
-  {Jean-Luc Censier}
-  {2024-05-21}
-  {12345}
-  {Noi}
-  {Penny}
-  {PicturesOrig/FolkeNoertemann_Arlo.jpg}
-
-\DogCaption
-  {Moss}
-  {Annie Vanderlinck}
-  {D. T. Edwards}
-  {2009-02-17}
-  {123435}
-  {Mirk}
-  {Llangwn Lass}
-  {PicturesOrig/AnnieVanderlinck_Moss.jpg}
-
-\DogCaption
-  {Tweed}
-  {Annie Vanderlinck}
-  {S. M. Lejuez}
-  {2018-12-23}
-  {BIJL. G-2-3144869}
-  {Kemi Rhys}
-  {Eryn}
-  {PicturesOrig/AnnieVanderlinck_Tweed.jpg}
+%\section{Alternative Layout with Caption}
+%
+%Here's an example using the \verb|\DogCaption| macro that displays the photo with information as a caption next to it:
+%\newpage
+%\DogCaption
+%  {Arlo}
+%  {Folke Noertemann}
+%  {Jean-Luc Censier}
+%  {2024-05-21}
+%  {12345}
+%  {Noi}
+%  {Penny}
+%  {PicturesOrig/FolkeNoertemann_Arlo.jpg}
+%
+%\DogCaption
+%  {Moss}
+%  {Annie Vanderlinck}
+%  {D. T. Edwards}
+%  {2009-02-17}
+%  {123435}
+%  {Mirk}
+%  {Llangwn Lass}
+%  {PicturesOrig/AnnieVanderlinck_Moss.jpg}
+%
+%\DogCaption
+%  {Tweed}
+%  {Annie Vanderlinck}
+%  {S. M. Lejuez}
+%  {2018-12-23}
+%  {BIJL. G-2-3144869}
+%  {Kemi Rhys}
+%  {Eryn}
+%  {PicturesOrig/AnnieVanderlinck_Tweed.jpg}
 
 
 
