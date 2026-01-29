@@ -15,75 +15,48 @@
 \usepackage{wrapfig} % for text wrapping around figures
 \usepackage{fancyhdr} % for headers and footers
 
-% ---------- "Function" definition ----------
-% \MyTable[<optional title>]{<Name>}{<Date>}{<Value>}{<Comment>}
-% ---------- \MyTable definition ----------
-% \MyTable{Name}{Handler}{RegNr}{Sire}{Breeder}{DOB}{Dam}
-\NewDocumentCommand{\MyTable}{ m m m m m m m m }{%
-  \def\dogname{#1}%
-  \def\handler{#2}%
-  \def\regnr{#5}%
-  \def\sire{#6}%
-  \def\breeder{#3}%
-  \def\dob{#4}%
-  \def\dam{#7}%
-  \def\photopath{#8}%
-  \begin{tabular}{|c|l|l|l|}
-    \hline
-    % Row 1: name over all 4 columns
-    \rowcolor{darkgray}
-    \multicolumn{4}{|l|}{\color{white}\textbf{\dogname}}\\ \hline
-    % Row 2: header row (Handler / Reg. Nr / Sire), first column = multirow for picture
-    \multirow{4}{*}{\includegraphics[width=2.8cm]{\photopath}} & \bf{Handler} & \bf{Reg. Nr} & \bf{Sire} \\ \cline{2-4}
-    % Row 3: handler, reg nr, sire
-                      & \handler      & \regnr      & \sire   \\ \cline{2-4}
-    % Row 4: header row (Breeder / DOB / Dam)
-                      & \bf{Breeder} & \bf{DOB}     & \bf{Dam}  \\ \cline{2-4}
-    % Row 5: breeder, dob, dam
-                      & \breeder      & \dob      & \dam   \\ \hline
-  \end{tabular}%
-}
+% ---------- Macro definitions ----------
+\input{old_macros.tex}
 
-
-\NewDocumentCommand{\MyTableOld}{ O{} m m m m }{%
-  \begin{table}[h]
-    \centering
-    % Optional title above the table:
-    \if\relax\detokenize{#1}\relax
-      % no title given → do nothing
-    \else
-      \textbf{#1}\\[0.5em]
-    \fi
-    \begin{tabular}{@{}ll@{}}
-      \toprule
-      Name    & #2 \\
-      Datum   & #3 \\
-      Wert    & #4 \\
-      Kommentar & #5 \\
-      \bottomrule
-    \end{tabular}
-  \end{table}%
+% ---------- \DogDataMinipage helper macro ----------
+% \DogDataMinipage{Breeder}{DOB}{RegNr}{Sire}{Dam}
+% Creates a minipage with dog data formatted consistently
+\NewDocumentCommand{\DogDataMinipage}{ m m m m m }{%
+  \def\breederlocal{#1} %
+  \def\doblocal{#2} %
+  \def\regnrlocal{#3} %
+  \def\sirelocal{#4} %
+  \def\damlocal{#5} %  
+  \begin{minipage}[t]{0.60\textwidth}
+    \vspace{0pt}%
+    \textbf{Reg. Nr:} \regnrlocal \hfill \textbf{DOB:} \doblocal\\
+    \textbf{Breeder:} \breederlocal\\
+    \textbf{Sire:} \sirelocal\\
+    \textbf{Dam:} \damlocal
+  \end{minipage}%
 }
 
 % ---------- \DogCaption definition ----------
 % \DogCaption{Name}{Handler}{Breeder}{DOB}{RegNr}{Sire}{Dam}{PhotoPath}
 % Displays dog photo on the left with information as a caption on the right
 \NewDocumentCommand{\DogCaption}{ m m m m m m m m }{%
+  \def\dogname{#1} %
+  \def\handler{#2} %
+  \def\breeder{#3} %
+  \def\dob{#4} %
+  \def\regnr{#5} %
+  \def\sire{#6} %
+  \def\dam{#7} %
+  \def\photopath{#8} %
   \noindent
   % Grey bar with dog's name and handler's name
   \colorbox{darkgray}{\parbox{\dimexpr\textwidth-2\fboxsep}{%
-    \color{white}\textbf{#1} \hfill \textbf{Handler:} #2}}\\[0.1em]
+    \color{white}\textbf{\dogname} \hfill \textbf{Handler:} \handler}}\\[0.1em]
   % Picture and information side by side below the bar
   \noindent\begin{minipage}[t]{0.35\textwidth}
     \vspace{0pt}%
-    \includegraphics[width=\textwidth,height=4cm,keepaspectratio]{#8}
-  \end{minipage}\hfill\begin{minipage}[t]{0.60\textwidth}
-    \vspace{0pt}%
-    \textbf{Reg. Nr:} #5 \hfill \textbf{DOB:} #4\\
-    \textbf{Breeder:} #3\\
-    \textbf{Sire:} #6\\
-    \textbf{Dam:} #7
-  \end{minipage}
+    \includegraphics[width=\textwidth,height=4cm,keepaspectratio]{\photopath}
+  \end{minipage}\hfill\DogDataMinipage{\breeder}{\dob}{\regnr}{\sire}{\dam}
   
   \vspace{0.5em}
 }
@@ -92,20 +65,22 @@
 % \DogCaptionReverse{Name}{Handler}{Breeder}{DOB}{RegNr}{Sire}{Dam}{PhotoPath}
 % Displays dog photo on the RIGHT with information as a caption on the LEFT (mirrored)
 \NewDocumentCommand{\DogCaptionReverse}{ m m m m m m m m }{%
+  \def\dognamer{#1} %
+  \def\handlerr{#2} %
+  \def\breederr{#3} %
+  \def\dobr{#4} %
+  \def\regnrr{#5} %
+  \def\sirer{#6} %
+  \def\damr{#7} %
+  \def\photopathr{#8} %
   \noindent
   % Grey bar with dog's name and handler's name
   \colorbox{darkgray}{\parbox{\dimexpr\textwidth-2\fboxsep}{%
-    \color{white}\textbf{#1} \hfill \textbf{Handler:} #2}}\\[0.1em]
+    \color{white}\textbf{\dognamer} \hfill \textbf{Handler:} \handlerr}}\\[0.1em]
   % Information on the LEFT and picture on the RIGHT (reversed)
-  \noindent\begin{minipage}[t]{0.60\textwidth}
+  \noindent\DogDataMinipage{\breederr}{\dobr}{\regnrr}{\sirer}{\damr}\hfill\begin{minipage}[t]{0.35\textwidth}
     \vspace{0pt}%
-    \textbf{Reg. Nr:} #5 \hfill \textbf{DOB:} #4\\
-    \textbf{Breeder:} #3\\
-    \textbf{Sire:} #6\\
-    \textbf{Dam:} #7
-  \end{minipage}\hfill\begin{minipage}[t]{0.35\textwidth}
-    \vspace{0pt}%
-    \includegraphics[width=\textwidth,height=4cm,keepaspectratio]{#8}
+    \includegraphics[width=\textwidth,height=4cm,keepaspectratio]{\photopathr}
   \end{minipage}
   
   \vspace{0.5em}

@@ -1,0 +1,51 @@
+% ---------- Old/Legacy Macro Definitions ----------
+% These macros are kept for reference but may not be actively used
+
+% ---------- \MyTable definition ----------
+% \MyTable{Name}{Handler}{Breeder}{DOB}{RegNr}{Sire}{Dam}{PhotoPath}
+\NewDocumentCommand{\MyTable}{ m m m m m m m m }{%
+  \def\dogname{#1}%
+  \def\handler{#2}%
+  \def\regnr{#5}%
+  \def\sire{#6}%
+  \def\breeder{#3}%
+  \def\dob{#4}%
+  \def\dam{#7}%
+  \def\photopath{#8}%
+  \begin{tabular}{|c|l|l|l|}
+    \hline
+    % Row 1: name over all 4 columns
+    \rowcolor{darkgray}
+    \multicolumn{4}{|l|}{\color{white}\textbf{\dogname}}\\ \hline
+    % Row 2: header row (Handler / Reg. Nr / Sire), first column = multirow for picture
+    \multirow{4}{*}{\includegraphics[width=2.8cm]{\photopath}} & \bf{Handler} & \bf{Reg. Nr} & \bf{Sire} \\ \cline{2-4}
+    % Row 3: handler, reg nr, sire
+                      & \handler      & \regnr      & \sire   \\ \cline{2-4}
+    % Row 4: header row (Breeder / DOB / Dam)
+                      & \bf{Breeder} & \bf{DOB}     & \bf{Dam}  \\ \cline{2-4}
+    % Row 5: breeder, dob, dam
+                      & \breeder      & \dob      & \dam   \\ \hline
+  \end{tabular}%
+}
+
+% ---------- \MyTableOld definition ----------
+% \MyTableOld[<optional title>]{Name}{Date}{Value}{Comment}
+\NewDocumentCommand{\MyTableOld}{ O{} m m m m }{%
+  \begin{table}[h]
+    \centering
+    % Optional title above the table:
+    \if\relax\detokenize{#1}\relax
+      % no title given → do nothing
+    \else
+      \textbf{#1}\\[0.5em]
+    \fi
+    \begin{tabular}{@{}ll@{}}
+      \toprule
+      Name    & #2 \\
+      Datum   & #3 \\
+      Wert    & #4 \\
+      Kommentar & #5 \\
+      \bottomrule
+    \end{tabular}
+  \end{table}%
+}
