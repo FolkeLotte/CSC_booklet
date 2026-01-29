@@ -1,10 +1,10 @@
-\documentclass[11pt,a4paper]{book}
+\documentclass[11pt,a5paper]{book}
 
 % ---------- Packages ----------
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc} % omit if you use lualatex/xelatex
 \usepackage[ngerman,english]{babel} % pick languages as needed
-\usepackage[a4paper,margin=2cm]{geometry} % portrait orientation
+\usepackage[a5paper,top=3cm,bottom=1.5cm,left=1.5cm,right=1.5cm,headsep=1cm,headheight=14pt]{geometry} % increased top margin and head separation
 \usepackage{xparse}
 \usepackage{booktabs} % nicer tables (optional)
 \usepackage{multirow}
@@ -12,6 +12,8 @@
 \usepackage{xcolor}
 \usepackage{colortbl} % enables \rowcolor
 \usepackage{grffile}
+\usepackage{wrapfig} % for text wrapping around figures
+\usepackage{fancyhdr} % for headers and footers
 
 % ---------- "Function" definition ----------
 % \MyTable[<optional title>]{<Name>}{<Date>}{<Value>}{<Comment>}
@@ -120,10 +122,27 @@
   \fi%
 }
 
+% ---------- Header/Footer Configuration ----------
+\pagestyle{fancy}
+\fancyhf{} % Clear all header and footer fields
+\fancyhead[L]{\leftmark} % Chapter name on the left
+\fancyhead[R]{\thepage} % Page number on the right
+\renewcommand{\headrulewidth}{0.4pt} % Line below header
+\renewcommand{\footrulewidth}{0pt} % No line in footer
+
+% For chapter pages (plain style)
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[L]{\leftmark}
+  \fancyhead[R]{\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
 \begin{document}
 
 \frontmatter
-\title{Beispielbuch mit \texttt{\textbackslash MyTable}}
+\title{Continental Sheepdog Championship 2026 \\ en Belgique}
 \author{Ihr Name}
 \date{\today}
 \maketitle
@@ -141,6 +160,8 @@ For handlers, reaching this championship is itself an achievement. It reflects y
 As spectators and readers, we are invited to look beyond scores and rankings. Each run tells a story: of training choices, of momentary challenges overcome, of harmony achieved — or briefly lost and regained. Whether you are deeply familiar with sheepdog work or discovering it for the first time, this championship offers a rare chance to witness one of Europe’s most authentic working traditions performed at its very best.
 
 We invite you to meet the dogs, appreciate their individuality, and celebrate the remarkable partnership they embody.
+
+\input{judges.tex}
 
 \chapter{Rules for the Final}
 
@@ -221,19 +242,5 @@ Here are examples using \verb|\DogCaptionAuto| which automatically alternates be
   {Kinloch Penny}
   {PicturesOrig/FolkeNoertemann_Heath.jpg}
 
-
-Hier ist ein Beispiel für die Verwendung von \verb|\MyTableOld| ohne Titel:
-
-\MyTableOld{Max Mustermann}{23.10.2025}{42}{Testeintrag ohne Titel}
-
-Und hier ein Beispiel mit Titel:
-
-\MyTableOld[Messdaten Teilnehmer 1]
-  {Erika Musterfrau}
-  {24.10.2025}
-  {3{,}14}
-  {Beispiel mit Überschrift}
-
-Sie können \verb|\MyTableOld| beliebig oft mit unterschiedlichen Argumenten aufrufen.
 
 \end{document}
