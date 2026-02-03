@@ -1,4 +1,9 @@
-\documentclass[11pt,a5paper]{book}
+\documentclass[10pt,a5paper]{book}
+
+% ---------- Font Selection ----------
+% Uncomment ONE of the following options:
+%\newcommand{\fontversion}{serif}    % Times-like (default)
+\newcommand{\fontversion}{sansserif} % Sans serif
 
 % ---------- Packages ----------
 \usepackage[T1]{fontenc}
@@ -15,6 +20,18 @@
 \usepackage{wrapfig} % for text wrapping around figures
 \usepackage{fancyhdr} % for headers and footers
 \usepackage{ifoddpage} % for checking odd/even pages correctly
+\usepackage{eso-pic} % for absolute positioning on pages
+
+% ---------- Font configuration ----------
+\usepackage{ifthen}
+\ifthenelse{\equal{\fontversion}{sansserif}}{
+  % Sans serif option - Futura-like (TeX Gyre Adventor)
+  \usepackage{tgadventor}  % Futura-like geometric sans serif
+  \renewcommand{\familydefault}{\sfdefault}
+}{
+  % Serif option (Times-like)
+  \usepackage{mathptmx}    % Times for text and math
+}
 
 % ---------- Macro definitions ----------
 \input{old_macros.tex}
@@ -144,48 +161,63 @@
 \begin{document}
 
 \frontmatter
-\title{Continental Sheepdog Championship 2026 \\ en Belgique}
-\author{Ihr Name}
-\date{\today}
-\maketitle
+
+% ---------- Custom Title Page ----------
+\begin{titlepage}
+  % Position logo in background using absolute positioning
+  \AddToShipoutPictureBG*{%
+    \AtPageCenter{%
+      \put(\LenToUnit{-0.40\paperwidth},\LenToUnit{-0.32\paperheight}){%
+        \includegraphics[width=0.9\paperwidth]{Logos/CSC26_Logo2.jpg}%
+      }%
+    }%
+  }
+  
+  \vspace*{3cm}
+  
+  % Title - shifted to right, left-aligned (on top of logo)
+  \hspace{0.15\textwidth}
+  \begin{minipage}{0.7\textwidth}
+    \raggedright
+    {\Huge\bfseries Continental Sheepdog\\[0.5cm] Championship 2026\par}
+    
+    \vspace{1cm}
+    
+    % Subtitle
+    {\Large\itshape en Belgique\par}
+  \end{minipage}
+  
+  \vfill
+  
+  % Date at bottom
+  \centering
+  {\large \today\par}
+  
+  \vspace{1cm}
+  
+  \vspace{1cm}
+  
+\end{titlepage}
 
 \mainmatter
 \input{welcome.tex}
-
 \input{judges.tex}
+\input{timetable.tex}
+\input{qualifications.tex}
 
-\chapter{Rules for the Final}
+
 
 \chapter{}
 \markboth{Dogs and their Handlers}{Dogs and their Handlers}
 
 \input{entries.tex}
 
-%\section{Alternative Layout with Caption}
+
+%\section{Automatic Layout Switching}
 %
-%Here's an example using the \verb|\DogCaption| macro that displays the photo with information as a caption next to it:
+%Here are examples using \verb|\DogCaptionAuto| which automatically alternates between left and right layouts based on page number:
 %\newpage
-%\DogCaption
-%  {Arlo}
-%  {Folke Noertemann}
-%  {Jean-Luc Censier}
-%  {2024-05-21}
-%  {12345}
-%  {Noi}
-%  {Penny}
-%  {PicturesOrig/FolkeNoertemann_Arlo.jpg}
-%
-%\DogCaption
-%  {Moss}
-%  {Annie Vanderlinck}
-%  {D. T. Edwards}
-%  {2009-02-17}
-%  {123435}
-%  {Mirk}
-%  {Llangwn Lass}
-%  {PicturesOrig/AnnieVanderlinck_Moss.jpg}
-%
-%\DogCaption
+%\DogCaptionAuto
 %  {Tweed}
 %  {Annie Vanderlinck}
 %  {S. M. Lejuez}
@@ -194,45 +226,26 @@
 %  {Kemi Rhys}
 %  {Eryn}
 %  {PicturesOrig/AnnieVanderlinck_Tweed.jpg}
-
-
-
-
-
-
-\section{Automatic Layout Switching}
-
-Here are examples using \verb|\DogCaptionAuto| which automatically alternates between left and right layouts based on page number:
-\newpage
-\DogCaptionAuto
-  {Tweed}
-  {Annie Vanderlinck}
-  {S. M. Lejuez}
-  {2018-12-23}
-  {BIJL. G-2-3144869}
-  {Kemi Rhys}
-  {Eryn}
-  {PicturesOrig/AnnieVanderlinck_Tweed.jpg}
-
-\DogCaptionAuto
-  {Kinloch Luke}
-  {Folke Noertemann}
-  {Angie Driscoll}
-  {2016-03-21}
-  {2345676}
-  {Kinloch Levi}
-  {Aaron Jan}
-  {PicturesOrig/FolkeNoertemann_Luke.jpg}
-
-\DogCaptionAuto
-  {Kinloch Heath}
-  {Folke Noertemann}
-  {Angie Driscoll}
-  {2018-08-10}
-  {33333}
-  {no idea}
-  {Kinloch Penny}
-  {PicturesOrig/FolkeNoertemann_Heath.jpg}
+%
+%\DogCaptionAuto
+%  {Kinloch Luke}
+%  {Folke Noertemann}
+%  {Angie Driscoll}
+%  {2016-03-21}
+%  {2345676}
+%  {Kinloch Levi}
+%  {Aaron Jan}
+%  {PicturesOrig/FolkeNoertemann_Luke.jpg}
+%
+%\DogCaptionAuto
+%  {Kinloch Heath}
+%  {Folke Noertemann}
+%  {Angie Driscoll}
+%  {2018-08-10}
+%  {33333}
+%  {no idea}
+%  {Kinloch Penny}
+%  {PicturesOrig/FolkeNoertemann_Heath.jpg}
 
 
 \end{document}
