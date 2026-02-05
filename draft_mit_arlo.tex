@@ -21,6 +21,9 @@
 \usepackage{fancyhdr} % for headers and footers
 \usepackage{ifoddpage} % for checking odd/even pages correctly
 \usepackage{eso-pic} % for absolute positioning on pages
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\Large\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Large}
 
 % ---------- Font configuration ----------
 \usepackage{ifthen}
@@ -201,6 +204,8 @@
 
 \mainmatter
 \input{welcome.tex}
+\input{president.tex}
+\input{visitors_map.tex}
 \input{judges.tex}
 \input{timetable.tex}
 \input{qualifications.tex}
