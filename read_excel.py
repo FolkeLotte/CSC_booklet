@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Read the Excel file into a pandas DataFrame
-df = pd.read_excel('Entries.xlsx')
+df = pd.read_excel('entries_AIGen.xlsx')
 
 # Create a LaTeX line for each row
 lines = []
